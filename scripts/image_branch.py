@@ -2,7 +2,7 @@ import yaml
 import argparse
 import random
 from utils.model import ImageTranslationBranch
-# from utils.base_util import *
+from utils.base_util import *
 import time
 
 H, W = 0, 0
