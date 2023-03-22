@@ -87,4 +87,4 @@ with torch.no_grad():
     IT_output_ridge = ridge_detection(IT_output_np, folder_pos, conf)
 
 show_img(IT_output_np*255., args.save_name)
-show_img(IT_output_ridge*255., args.save_name.split('.')[0]+'_ridge.png')
+show_img((1-IT_output_ridge)*255., args.save_name.split('.')[0]+'_ridge.png')
