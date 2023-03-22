@@ -2,7 +2,7 @@ import yaml
 import argparse
 import random
 from utils.model import ImageTranslationBranch
-from utils.base_util import *
+# from utils.base_util import *
 import time
 
 H, W = 0, 0
@@ -38,6 +38,26 @@ def show_img(cv2_array, ofn=None):
         # cv2_array = cv2.resize(cv2_array, dsize=(W, H), interpolation=cv2.INTER_CUBIC)
         cv2.imwrite(ofn, cv2_array)
 
+def ridge_detection(img_pro, folder_pos, conf):
+    img_cv2 = np.uint8(img_pro * 255.0)
+    img_cv2[img_cv2 >= conf['rd_b_t']] = 255
+    Hxx, Hxy, Hyy = hessian_matrix(img_cv2, sigma=conf['rd_sigma_para'], order='xy')
+    i1, i2 = hessian_matrix_eigvals(Hxx, Hxy, Hyy)
+
+    i1[i1 <= conf['rd_threshold']] = 0.0
+    i1[i1 >= conf['rd_threshold']] = 1.0
+
+    pr = np.uint8(i1 * 255.0)
+    kernel = np.ones((conf['rd_kernel_size'], conf['rd_kernel_size']), np.uint8)
+    pr = cv2.erode(pr, kernel, iterations=1) / 255.0
+
+    # base_fn = os.path.join(folder_pos, 'base.png')
+    # base_pr = 1.0 - cv2.imread(base_fn, cv2.IMREAD_GRAYSCALE) / 255.0
+    # pr = np.maximum(pr, base_pr)
+    output = pr2tensor(pr)
+
+    return output
+
 parser = argparse.ArgumentParser()
 parser.add_argument('-model_name', type=str, required=True)
 parser.add_argument('-config_file', type=str, default='configs/default_config.yml')
@@ -64,6 +84,7 @@ with torch.no_grad():
     IT_input = fetch_IT_input(folder_pos)
     IT_output_probability = IT_branch(IT_input)
     IT_output_np = np.squeeze(IT_output_probability.data.cpu().float().numpy())
-    # IT_output_with_base = ridge_detection(IT_output_np, folder_pos, conf)
+    IT_output_with_base = ridge_detection(IT_output_np, folder_pos, conf)
 
 show_img(IT_output_np*255., args.save_name)
+show_img(IT_output_np*255., args.save_name.split('.')[0]+'_ridge.png')
