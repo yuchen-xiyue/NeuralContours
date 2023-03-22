@@ -21,7 +21,7 @@ def fetch_IT_input(folder_pos):
     for smooth_id, smooth_str in enumerate(multi_smooth_list):
         nv_path = os.path.join(folder_pos, '%s.png' % smooth_str)
         smooth_i = cv2.imread(nv_path, cv2.IMREAD_UNCHANGED) / 65535.0 - 0.974258
-        print(smooth_i.shape)
+        # print(smooth_i.shape)
         nv_img[smooth_id, :, :] = cv2.resize(smooth_i, dsize=(768, 768), interpolation=cv2.INTER_CUBIC)
 
     output_np = np.concatenate((nv_img, depth_img), axis=0)
@@ -35,7 +35,7 @@ def show_img(cv2_array, ofn=None):
         cv2.waitKey(0)
         cv2.destroyAllWindows()
     else:
-        cv2_array = cv2.resize(smooth_i, dsize=(W, H), interpolation=cv2.INTER_CUBIC)
+        cv2_array = cv2.resize(cv2_array, dsize=(W, H), interpolation=cv2.INTER_CUBIC)
         cv2.imwrite(ofn, cv2_array)
 
 parser = argparse.ArgumentParser()
