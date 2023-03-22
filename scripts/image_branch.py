@@ -5,7 +5,7 @@ from utils.model import ImageTranslationBranch
 from utils.base_util import *
 import time
 
-H, W = 0
+H, W = 0, 0
 def fetch_IT_input(folder_pos):
     multi_smooth_list = ['smooth_0', 'smooth_1', 'smooth_2', 'smooth_3', 'smooth_4', 'smooth_5']
 
