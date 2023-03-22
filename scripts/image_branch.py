@@ -35,7 +35,7 @@ def show_img(cv2_array, ofn=None):
         cv2.waitKey(0)
         cv2.destroyAllWindows()
     else:
-        cv2_array = cv2.resize(cv2_array, dsize=(W, H), interpolation=cv2.INTER_CUBIC)
+        # cv2_array = cv2.resize(cv2_array, dsize=(W, H), interpolation=cv2.INTER_CUBIC)
         cv2.imwrite(ofn, cv2_array)
 
 parser = argparse.ArgumentParser()
