@@ -10,7 +10,7 @@ def fetch_IT_input(folder_pos):
     multi_smooth_list = ['smooth_0', 'smooth_1', 'smooth_2', 'smooth_3', 'smooth_4', 'smooth_5']
 
     depth_path = os.path.join(folder_pos, 'depth.png')
-    depth_img = cv2.imread(depth_path, cv2.IMREAD_UNCHANGED) / 65535.0
+    depth_img = cv2.imread(depth_path, cv2.IMREAD_UNCHANGED) / 255.0
     H, W = depth_img.shape
     depth_img = cv2.resize(depth_img, dsize=(768, 768), interpolation=cv2.INTER_CUBIC)
     dim1 = depth_img.shape[0]
@@ -20,7 +20,7 @@ def fetch_IT_input(folder_pos):
     nv_img = np.zeros((len(multi_smooth_list), dim1, dim2))
     for smooth_id, smooth_str in enumerate(multi_smooth_list):
         nv_path = os.path.join(folder_pos, '%s.png' % smooth_str)
-        smooth_i = cv2.imread(nv_path, cv2.IMREAD_UNCHANGED) / 65535.0 - 0.974258
+        smooth_i = cv2.imread(nv_path, cv2.IMREAD_UNCHANGED) / 255.0 - 0.974258
         # print(smooth_i.shape)
         nv_img[smooth_id, :, :] = cv2.resize(smooth_i, dsize=(768, 768), interpolation=cv2.INTER_CUBIC)
 
