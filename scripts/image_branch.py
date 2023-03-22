@@ -66,4 +66,4 @@ with torch.no_grad():
     IT_output_np = np.squeeze(IT_output_probability.data.cpu().float().numpy())
     # IT_output_with_base = ridge_detection(IT_output_np, folder_pos, conf)
 
-show_img(IT_output_np, args.save_name)
+show_img(IT_output_np*255., args.save_name)
