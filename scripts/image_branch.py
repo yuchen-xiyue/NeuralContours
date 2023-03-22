@@ -54,7 +54,7 @@ torch.manual_seed(conf['seed_num'])
 torch.backends.cudnn.benchmark = False
 torch.backends.cudnn.deterministic = True
 
-folder_pos = os.path.join(os.getcwd, conf['data_folder'], args.model_name)
+folder_pos = os.path.join(os.getcwd(), conf['data_folder'], args.model_name)
 with torch.no_grad():
     IT_branch = ImageTranslationBranch(7, 1, ngf=64, n_downsampling=4, n_blocks=9)
     IT_branch.cuda()
