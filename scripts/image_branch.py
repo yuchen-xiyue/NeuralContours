@@ -42,7 +42,7 @@ def ridge_detection(img_pro, folder_pos, conf):
     img_cv2 = np.uint8(img_pro * 255.0)
     img_cv2[img_cv2 >= conf['rd_b_t']] = 255
     Hxx, Hxy, Hyy = hessian_matrix(img_cv2, sigma=conf['rd_sigma_para'], order='xy')
-    i1, i2 = hessian_matrix_eigvals(Hxx, Hxy, Hyy)
+    i1, i2 = hessian_matrix_eigvals((Hxx, Hxy, Hyy))
 
     i1[i1 <= conf['rd_threshold']] = 0.0
     i1[i1 >= conf['rd_threshold']] = 1.0
