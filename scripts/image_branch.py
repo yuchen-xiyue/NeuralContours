@@ -51,9 +51,9 @@ def ridge_detection(img_pro, folder_pos, conf):
     kernel = np.ones((conf['rd_kernel_size'], conf['rd_kernel_size']), np.uint8)
     pr = cv2.erode(pr, kernel, iterations=1) / 255.0
 
-    # base_fn = os.path.join(folder_pos, 'base.png')
-    # base_pr = 1.0 - cv2.imread(base_fn, cv2.IMREAD_GRAYSCALE) / 255.0
-    # pr = np.maximum(pr, base_pr)
+    base_fn = os.path.join(folder_pos, 'base.png')
+    base_pr = 1.0 - cv2.imread(base_fn, cv2.IMREAD_GRAYSCALE) / 255.0
+    pr = np.maximum(pr, base_pr)
     # output = pr2tensor(pr)
 
     return pr
