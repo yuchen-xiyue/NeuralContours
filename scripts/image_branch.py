@@ -89,7 +89,7 @@ with torch.no_grad():
     base_fn = os.path.join(folder_pos, 'base.png')
     base_pc = cv2.resize(cv2.imread(base_fn, cv2.IMREAD_GRAYSCALE), dsize=(768, 768), interpolation=cv2.INTER_CUBIC)
     base_pr = base_pc / 255.0
-    IT_output_np_with_base = np.maximum(IT_output_np, base_pr)
+    IT_output_np_with_base = 1.-np.maximum(1.-IT_output_np, 1.-base_pr)
 
 show_img(IT_output_np*255., args.save_name)
 show_img(IT_output_np_with_base*255., args.save_name.split('.')[0]+'_with_base.png')
