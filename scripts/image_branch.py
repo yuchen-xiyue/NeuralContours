@@ -52,7 +52,8 @@ def ridge_detection(img_pro, folder_pos, conf):
     pr = cv2.erode(pr, kernel, iterations=1) / 255.0
 
     base_fn = os.path.join(folder_pos, 'base.png')
-    base_pr = 1.0 - cv2.imread(base_fn, cv2.IMREAD_GRAYSCALE) / 255.0
+    base_pc = cv2.resize(cv2.imread(base_fn, cv2.IMREAD_GRAYSCALE), dsize=(768, 768), interpolation=cv2.INTER_CUBIC)
+    base_pr = 1.0 - base_pc / 255.0
     pr = np.maximum(pr, base_pr)
     # output = pr2tensor(pr)
 
@@ -84,7 +85,7 @@ with torch.no_grad():
     IT_input = fetch_IT_input(folder_pos)
     IT_output_probability = IT_branch(IT_input)
     IT_output_np = np.squeeze(IT_output_probability.data.cpu().float().numpy())
-    IT_output_ridge = ridge_detection(IT_output_np, folder_pos, conf)
+    IT_output_ridge_with_base = ridge_detection(IT_output_np, folder_pos, conf)
 
 show_img(IT_output_np*255., args.save_name)
-show_img((1-IT_output_ridge)*255., args.save_name.split('.')[0]+'_ridge.png')
+show_img((1-IT_output_ridge_with_base)*255., args.save_name.split('.')[0]+'_ridge_with_base.png')
